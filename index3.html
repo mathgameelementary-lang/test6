@@ -49,9 +49,9 @@
         @keyframes comboPulse { from { transform: scale(1); } to { transform: scale(1.02); } }
         
         .input-group { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
-        select, input[type="number"] { padding: 10px; font-size: 1.3rem; border: 2px solid #e0e0e0; border-radius: 12px; outline: none; background: white; transition: 0.2s; text-align: center; }
-        select:disabled, input[type="number"]:disabled { background: #f0f0f0; color: #888; cursor: not-allowed; border-color: #ddd; }
-        input[type="number"] { width: 100px; }
+        select, input[type="text"] { padding: 10px; font-size: 1.3rem; border: 2px solid #e0e0e0; border-radius: 12px; outline: none; background: white; transition: 0.2s; text-align: center; }
+        select:disabled, input[type="text"]:disabled { background: #f0f0f0; color: #888; cursor: not-allowed; border-color: #ddd; }
+        input[type="text"] { width: 100px; }
         
         .submit-btn { padding: 10px 24px; background: var(--dark); color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.1rem; font-weight: bold; box-shadow: 0 4px 0 #1a252f; transition: 0.2s; min-width: 100px; }
         .submit-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #1a252f; }
@@ -174,7 +174,7 @@
             .view-content { padding: 15px; margin-top: 10px; }
             .eq-display { font-size: 1.5rem; min-height: 120px; padding: 15px 10px; }
             .input-group { flex-direction: row; flex-wrap: wrap; }
-            select, input[type="number"] { font-size: 1.1rem; padding: 8px; }
+            select, input[type="text"] { font-size: 1.1rem; padding: 8px; }
             .submit-btn { width: 100%; margin-top: 5px; padding: 12px; }
             #sp-container { top: 10%; width: 90%; max-width: 400px; resize: none; }
         }
@@ -256,8 +256,7 @@
             <div class="input-group">
                 <span style="font-size:1.5rem; font-weight:bold;">x</span>
                 <select id="diag-op"><option>></option><option><</option><option>≥</option><option>≤</option></select>
-                <button type="button" class="submit-btn" style="min-width: 40px; padding: 10px; background: #95a5a6; box-shadow: 0 4px 0 #7f8c8d;" onclick="toggleSign('diag-val')">+/-</button>
-                <input type="number" id="diag-val" placeholder="?">
+                <input type="text" inputmode="decimal" id="diag-val" placeholder="?">
                 <button id="diag-btn" class="submit-btn" onclick="submitDiag()">回答</button>
             </div>
         </div>
@@ -271,8 +270,7 @@
         <div class="input-group">
             <span style="font-size:1.5rem; font-weight:bold;">x</span>
             <select id="practice-op"><option>></option><option><</option><option>≥</option><option>≤</option></select>
-            <button type="button" class="submit-btn" style="min-width: 40px; padding: 10px; background: #95a5a6; box-shadow: 0 4px 0 #7f8c8d;" onclick="toggleSign('practice-val')">+/-</button>
-            <input type="number" id="practice-val" placeholder="?">
+            <input type="text" inputmode="decimal" id="practice-val" placeholder="?">
             <button id="practice-btn" class="submit-btn" onclick="submitPractice()">回答</button>
             <button id="practice-hint-btn" class="submit-btn hidden" onclick="showHint()" style="background: var(--warning); min-width: auto; padding: 10px 18px;">💡 提示</button>
         </div>
@@ -360,7 +358,7 @@
             { getOriginal: () => ({ eq: `-2x + 5 ≥ 9`, solX: -2, solOp: `≤`, stepsHTML: `移項：-2x ≥ 9 − 5<br>計算：-2x ≥ 4<br>同除 -2 <b>(記得轉向)</b>：x ≤ -2` }), getVariation: () => { let sX = getNonZero(10, -10), c1 = getNonZero(10, -10), c2 = -2 * sX + c1; return { eq: `-2x ${fs1(c1)} ≥ ${c2}`, solX: sX, solOp: `≤`, stepsHTML: `移項：-2x ≥ ${c2} ${fi1(c1)}<br>計算：-2x ≥ ${c2-c1}<br>同除 -2 <b>(記得轉向)</b>：x ≤ ${sX}` }; } },
             { getOriginal: () => ({ eq: `-5x + 2 < 12`, solX: -2, solOp: `<`, stepsHTML: `移項：-5x < 12 − 2<br>計算：-5x < 10<br>同除 -5 <b>(記得轉向)</b>：x > -2` }), getVariation: () => { let sX = getNonZero(8, -8), c1 = getNonZero(15, -15), c2 = -5 * sX + c1; return { eq: `-5x ${fs1(c1)} < ${c2}`, solX: sX, solOp: `<`, stepsHTML: `移項：-5x < ${c2} ${fi1(c1)}<br>計算：-5x < ${c2-c1}<br>同除 -5 <b>(記得轉向)</b>：x > ${sX}` }; } },
             { getOriginal: () => ({ eq: `-10 > 6x + 8`, solX: -3, solOp: `<`, stepsHTML: `移項：-6x > 8 + 10<br>計算：-6x > 18<br>同除 -6 <b>(記得轉向)</b>：x < -3` }), getVariation: () => { let sX = getNonZero(8, -8), c2 = getNonZero(15, -15), c1 = 6 * sX + c2; return { eq: `${c1} > 6x ${fs1(c2)}`, solX: sX, solOp: `<`, stepsHTML: `移項：-6x > ${c2} ${fi1(c1)}<br>計算：-6x > ${c2-c1}<br>同除 -6 <b>(記得轉向)</b>：x < ${sX}` }; } },
-            { getOriginal: () => ({ eq: `-10 > -6x + 8`, solX: 3, solOp: `>`, stepsHTML: `移項：6x > 8 + 10<br>計算：6x > 18<br>同除 6：x > 3` }), getVariation: () => { let sX = getNonZero(8, -8), c2 = getNonZero(15, -15), c1 = -6 * sX + c2; return { eq: `${c1} > -6x ${fs1(c2)}`, solX: sX, solOp: `>`, stepsHTML: `移項：6x > ${c2} ${fi1(c1)}<br>計算：6x > ${c2-c1}<br>同除 6：x > ${sX}` }; } },
+            { getOriginal: () => ({ eq: `-10 > -6x + 8`, solX: 3, solOp: `<`, stepsHTML: `移項：6x > 8 + 10<br>計算：6x > 18<br>同除 6：x > 3` }), getVariation: () => { let sX = getNonZero(8, -8), c2 = getNonZero(15, -15), c1 = -6 * sX + c2; return { eq: `${c1} > -6x ${fs1(c2)}`, solX: sX, solOp: `>`, stepsHTML: `移項：6x > ${c2} ${fi1(c1)}<br>計算：6x > ${c2-c1}<br>同除 6：x > ${sX}` }; } },
             { getOriginal: () => ({ eq: `3x + 4 > -2x + 14`, solX: 2, solOp: `>`, stepsHTML: `移項：3x + 2x > 14 − 4<br>計算：5x > 10<br>同除 5：x > 2` }), getVariation: () => { let sX, c1, c2; do { sX = getNonZero(8, -4); c1 = getNonZero(15, -15); c2 = 5 * sX + c1; } while(c2 === 0); return { eq: `3x ${fs1(c1)} > -2x ${fs1(c2)}`, solX: sX, solOp: `>`, stepsHTML: `移項：3x + 2x > ${c2} ${fi1(c1)}<br>計算：5x > ${c2-c1}<br>同除 5：x > ${sX}` }; } },
             { getOriginal: () => ({ eq: `-4x + 1 ≤ 3x − 13`, solX: 2, solOp: `≥`, stepsHTML: `移項：-4x − 3x ≤ -13 − 1<br>計算：-7x ≤ -14<br>同除 -7 <b>(記得轉向)</b>：x ≥ 2` }), getVariation: () => { let sX, c1, c2; do { sX = getNonZero(8, -4); c1 = getNonZero(15, -15); c2 = -7 * sX + c1; } while(c2 === 0); return { eq: `-4x ${fs1(c1)} ≤ 3x ${fs1(c2)}`, solX: sX, solOp: `≥`, stepsHTML: `移項：-4x − 3x ≤ ${c2} ${fi1(c1)}<br>計算：-7x ≤ ${c2-c1}<br>同除 -7 <b>(記得轉向)</b>：x ≥ ${sX}` }; } },
             { getOriginal: () => ({ eq: `-2x + 3 ≥ 3x + 8`, solX: -1, solOp: `≤`, stepsHTML: `移項：-2x − 3x ≥ 8 − 3<br>計算：-5x ≥ 5<br>同除 -5 <b>(記得轉向)</b>：x ≤ -1` }), getVariation: () => { let sX, c1, c2; do { sX = getNonZero(8, -6); c1 = getNonZero(15, -15); c2 = -5 * sX + c1; } while(c2 === 0); return { eq: `-2x ${fs1(c1)} ≥ 3x ${fs1(c2)}`, solX: sX, solOp: `≤`, stepsHTML: `移項：-2x − 3x ≥ ${c2} ${fi1(c1)}<br>計算：-5x ≥ ${c2-c1}<br>同除 -5 <b>(記得轉向)</b>：x ≤ ${sX}` }; } }
@@ -864,20 +862,6 @@
             </div>
             <button onclick="goHome()" class="lvl-btn" style="background:var(--primary); margin-top: 15px;">回到大廳</button>
         `;
-    }
-
-    // 新增：正負號切換功能
-    function toggleSign(inputId) {
-        const input = document.getElementById(inputId);
-        let val = input.value;
-        if (val === "") {
-            input.value = "-"; // 如果是空的，先給個負號
-        } else if (val.startsWith("-")) {
-            input.value = val.substring(1); // 有負號就拿掉
-        } else {
-            input.value = "-" + val; // 沒負號就加上去
-        }
-        input.focus(); // 讓輸入框保持焦點
     }
 
     document.addEventListener('keydown', function(e) {
