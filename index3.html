@@ -48,19 +48,23 @@
         .combo-glow-2 { background: #fff8f5; border-color: #ff7849 !important; box-shadow: 0 0 30px rgba(255, 120, 73, 0.6); animation: comboPulse 0.8s infinite alternate ease-in-out; }
         @keyframes comboPulse { from { transform: scale(1); } to { transform: scale(1.02); } }
         
-        .input-group { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; position: relative; z-index: 10; }
+        .input-group { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
         select, input[type="number"] { 
-            padding: 10px; font-size: 1.3rem; border: 2px solid #e0e0e0; 
-            border-radius: 12px; outline: none; background: white; transition: 0.2s; text-align: center; 
-            touch-action: manipulation;
-            cursor: pointer;
-            -webkit-appearance: auto;
-            appearance: auto;
+            padding: 10px; 
+            font-size: 1.3rem; 
+            border: 2px solid #e0e0e0; 
+            border-radius: 12px; 
+            outline: none; 
+            background: white; 
+            color: var(--dark);
+            transition: 0.2s; 
+            text-align: center; 
         }
+        select { cursor: pointer; }
         select:disabled, input[type="number"]:disabled { background: #f0f0f0; color: #888; cursor: not-allowed; border-color: #ddd; }
         input[type="number"] { width: 100px; cursor: text; }
         
-        .submit-btn { padding: 10px 24px; background: var(--dark); color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.1rem; font-weight: bold; box-shadow: 0 4px 0 #1a252f; transition: 0.2s; min-width: 100px; touch-action: manipulation; }
+        .submit-btn { padding: 10px 24px; background: var(--dark); color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.1rem; font-weight: bold; box-shadow: 0 4px 0 #1a252f; transition: 0.2s; min-width: 100px; height: 50px; }
         .submit-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #1a252f; }
         .submit-btn.next-mode { background: var(--primary); box-shadow: 0 4px 0 #357abd; }
 
@@ -478,7 +482,7 @@
             return;
         }
 
-        // 🌟 更新：直接將下拉的符號與輸入的數字相乘，讓「負負得正」發揮作用
+        // 🌟 正負號邏輯：將選單符號(1 或 -1)乘上輸入的數字
         const sign = parseInt(document.getElementById('practice-sign').value);
         const uVal = sign * rawVal;
 
@@ -570,7 +574,7 @@
         const uOp = document.getElementById('practice-op').value;
         const rawVal = parseInt(document.getElementById('practice-val').value);
         
-        // 🌟 更新：直接將下拉的符號與輸入的數字相乘
+        // 🌟 正負號邏輯
         const sign = parseInt(document.getElementById('practice-sign').value);
         const uVal = sign * rawVal;
 
@@ -774,7 +778,7 @@
             return;
         }
 
-        // 🌟 更新：直接將下拉的符號與輸入的數字相乘
+        // 🌟 正負號邏輯
         const sign = parseInt(document.getElementById('diag-sign').value);
         const uVal = sign * rawVal;
 
@@ -998,8 +1002,14 @@
     document.addEventListener('mousemove', drag);
     document.addEventListener('mouseup', dragEnd);
     
+    // 將手機版觸控滑動改為更安全的方式，避免攔截下拉選單點擊
     spHeader.addEventListener('touchstart', dragStart, { passive: false });
-    document.addEventListener('touchmove', drag, { passive: false });
+    document.addEventListener('touchmove', function(e) {
+        if (isDragging) {
+            e.preventDefault();
+            drag(e);
+        }
+    }, { passive: false });
     document.addEventListener('touchend', dragEnd);
 
 </script>
