@@ -52,7 +52,6 @@
         select, input[type="number"] { 
             padding: 10px; font-size: 1.3rem; border: 2px solid #e0e0e0; 
             border-radius: 12px; outline: none; background: white; transition: 0.2s; text-align: center; 
-            /* 手機端防呆與觸控優化 */
             touch-action: manipulation;
             cursor: pointer;
             -webkit-appearance: auto;
@@ -479,8 +478,9 @@
             return;
         }
 
+        // 🌟 更新：直接將下拉的符號與輸入的數字相乘，讓「負負得正」發揮作用
         const sign = parseInt(document.getElementById('practice-sign').value);
-        const uVal = sign * Math.abs(rawVal);
+        const uVal = sign * rawVal;
 
         const isOk = (uOp === pState[mode].prob.solOp && uVal === pState[mode].prob.solX);
         
@@ -569,8 +569,11 @@
         const mode = pState.currentMode;
         const uOp = document.getElementById('practice-op').value;
         const rawVal = parseInt(document.getElementById('practice-val').value);
+        
+        // 🌟 更新：直接將下拉的符號與輸入的數字相乘
         const sign = parseInt(document.getElementById('practice-sign').value);
-        const uVal = sign * Math.abs(rawVal);
+        const uVal = sign * rawVal;
+
         const msg = document.getElementById('practice-msg');
 
         const opOk = (uOp === pState[mode].prob.solOp);
@@ -771,8 +774,9 @@
             return;
         }
 
+        // 🌟 更新：直接將下拉的符號與輸入的數字相乘
         const sign = parseInt(document.getElementById('diag-sign').value);
-        const uVal = sign * Math.abs(rawVal);
+        const uVal = sign * rawVal;
 
         const isOk = (uOp === diagState.prob.solOp && uVal === diagState.prob.solX);
         
