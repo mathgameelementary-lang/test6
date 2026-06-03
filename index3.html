@@ -48,12 +48,20 @@
         .combo-glow-2 { background: #fff8f5; border-color: #ff7849 !important; box-shadow: 0 0 30px rgba(255, 120, 73, 0.6); animation: comboPulse 0.8s infinite alternate ease-in-out; }
         @keyframes comboPulse { from { transform: scale(1); } to { transform: scale(1.02); } }
         
-        .input-group { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
-        select, input[type="number"] { padding: 10px; font-size: 1.3rem; border: 2px solid #e0e0e0; border-radius: 12px; outline: none; background: white; transition: 0.2s; text-align: center; }
+        .input-group { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; position: relative; z-index: 10; }
+        select, input[type="number"] { 
+            padding: 10px; font-size: 1.3rem; border: 2px solid #e0e0e0; 
+            border-radius: 12px; outline: none; background: white; transition: 0.2s; text-align: center; 
+            /* 手機端防呆與觸控優化 */
+            touch-action: manipulation;
+            cursor: pointer;
+            -webkit-appearance: auto;
+            appearance: auto;
+        }
         select:disabled, input[type="number"]:disabled { background: #f0f0f0; color: #888; cursor: not-allowed; border-color: #ddd; }
-        input[type="number"] { width: 100px; }
+        input[type="number"] { width: 100px; cursor: text; }
         
-        .submit-btn { padding: 10px 24px; background: var(--dark); color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.1rem; font-weight: bold; box-shadow: 0 4px 0 #1a252f; transition: 0.2s; min-width: 100px; }
+        .submit-btn { padding: 10px 24px; background: var(--dark); color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.1rem; font-weight: bold; box-shadow: 0 4px 0 #1a252f; transition: 0.2s; min-width: 100px; touch-action: manipulation; }
         .submit-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #1a252f; }
         .submit-btn.next-mode { background: var(--primary); box-shadow: 0 4px 0 #357abd; }
 
@@ -100,39 +108,21 @@
             background: #fff; border: 3px solid var(--primary); border-radius: 50%;
             font-size: 30px; display: flex; justify-content: center; align-items: center;
             cursor: pointer; box-shadow: 0 6px 15px rgba(0,0,0,0.15); z-index: 8000;
-            transition: transform 0.2s; padding-bottom: 2px; /* emoji置中微調 */
+            transition: transform 0.2s; padding-bottom: 2px;
         }
         #fab-scratchpad:active { transform: scale(0.9); }
         #fab-scratchpad:hover { transform: scale(1.05); }
 
-        /* 計算紙提示對話框 */
         .fab-hint {
-            position: absolute;
-            right: 85px; /* 讓對話框出現在按鈕左側 */
-            top: 50%;
-            transform: translateY(-50%);
-            background: var(--warning);
-            color: white;
-            font-size: 0.95rem;
-            font-weight: bold;
-            padding: 8px 14px;
-            border-radius: 12px;
-            white-space: nowrap;
-            line-height: 1.4;
-            text-align: right;
-            pointer-events: none; /* 防止擋住滑鼠點擊 */
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            position: absolute; right: 85px; top: 50%; transform: translateY(-50%);
+            background: var(--warning); color: white; font-size: 0.95rem; font-weight: bold;
+            padding: 8px 14px; border-radius: 12px; white-space: nowrap; line-height: 1.4;
+            text-align: right; pointer-events: none; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             animation: floatLeftRight 1.5s infinite alternate ease-in-out;
         }
         .fab-hint::after {
-            content: '';
-            position: absolute;
-            right: -8px;
-            top: 50%;
-            transform: translateY(-50%);
-            border-width: 8px 0 8px 8px;
-            border-style: solid;
-            border-color: transparent transparent transparent var(--warning);
+            content: ''; position: absolute; right: -8px; top: 50%; transform: translateY(-50%);
+            border-width: 8px 0 8px 8px; border-style: solid; border-color: transparent transparent transparent var(--warning);
         }
         @keyframes floatLeftRight {
             0% { transform: translateY(-50%) translateX(0); }
@@ -153,15 +143,11 @@
         #sp-header:active { cursor: grabbing; }
         #sp-title { font-weight: bold; color: #444; font-size: 0.9rem; display: flex; align-items: center; gap: 5px; }
         .sp-tools { display: flex; gap: 4px; }
-        .sp-btn {
-            background: none; border: 1px solid transparent; cursor: pointer; font-size: 18px;
-            padding: 4px; border-radius: 6px; transition: 0.2s; opacity: 0.7;
-        }
+        .sp-btn { background: none; border: 1px solid transparent; cursor: pointer; font-size: 18px; padding: 4px; border-radius: 6px; transition: 0.2s; opacity: 0.7; }
         .sp-btn:hover { opacity: 1; background: #e2e8f0; }
         .sp-btn.active { opacity: 1; background: #d0def0; border-color: #a0bcdc; }
         #sp-canvas-wrapper { flex-grow: 1; position: relative; width: 100%; height: 100%; touch-action: none; background: #fff; }
         #sp-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: crosshair; }
-        /* ======================================================= */
 
         @media (max-width: 768px) {
             .lobby-title { font-size: 2.2rem; }
@@ -195,37 +181,21 @@
             <div class="card-icon">🔍</div>
             <h2>適性診斷</h2>
             <p>偵測你的不等式戰力</p>
-            <ul class="card-list">
-                <li>📝 給予適性診斷報告</li>
-                <li>🎯 找出最適合的起點</li>
-            </ul>
         </div>
         <div class="card card-base" onclick="openGame('base')">
             <div class="card-icon">🌱</div>
             <h2>基礎關</h2>
             <p>單邊移項基礎練習</p>
-            <ul class="card-list">
-                <li>😈 無壓力無限練習</li>
-                <li>🎯 雙向精熟與降級判定</li>
-            </ul>
         </div>
         <div class="card card-adv" onclick="openGame('adv')">
             <div class="card-icon">🚀</div>
             <h2>進階關</h2>
             <p>雙邊移項與負數變向</p>
-            <ul class="card-list">
-                <li>📐 無壓力無限練習</li>
-                <li>🎯 雙向精熟與降級判定</li>
-            </ul>
         </div>
         <div class="card card-chal" onclick="openGame('chal')">
             <div class="card-icon">🏆</div>
             <h2>挑戰關</h2>
             <p>異分母分數與括號變號</p>
-            <ul class="card-list">
-                <li>🧩 無壓力無限練習</li>
-                <li>🎯 雙向精熟與降級判定</li>
-            </ul>
         </div>
     </div>
 </div>
@@ -255,8 +225,16 @@
             <div class="eq-display" id="diag-eq"></div>
             <div class="input-group">
                 <span style="font-size:1.5rem; font-weight:bold;">x</span>
-                <select id="diag-op"><option>></option><option><</option><option>≥</option><option>≤</option></select>
-                <select id="diag-sign" style="width: 65px;"><option value="1">+</option><option value="-1">-</option></select>
+                <select id="diag-op">
+                    <option value=">">&gt;</option>
+                    <option value="<">&lt;</option>
+                    <option value="≥">≥</option>
+                    <option value="≤">≤</option>
+                </select>
+                <select id="diag-sign" style="width: 65px;">
+                    <option value="1">+</option>
+                    <option value="-1">-</option>
+                </select>
                 <input type="number" id="diag-val" placeholder="?">
                 <button id="diag-btn" class="submit-btn" onclick="submitDiag()">回答</button>
             </div>
@@ -270,8 +248,16 @@
         <div class="eq-display" id="practice-eq"></div>
         <div class="input-group">
             <span style="font-size:1.5rem; font-weight:bold;">x</span>
-            <select id="practice-op"><option>></option><option><</option><option>≥</option><option>≤</option></select>
-            <select id="practice-sign" style="width: 65px;"><option value="1">+</option><option value="-1">-</option></select>
+            <select id="practice-op">
+                <option value=">">&gt;</option>
+                <option value="<">&lt;</option>
+                <option value="≥">≥</option>
+                <option value="≤">≤</option>
+            </select>
+            <select id="practice-sign" style="width: 65px;">
+                <option value="1">+</option>
+                <option value="-1">-</option>
+            </select>
             <input type="number" id="practice-val" placeholder="?">
             <button id="practice-btn" class="submit-btn" onclick="submitPractice()">回答</button>
             <button id="practice-hint-btn" class="submit-btn hidden" onclick="showHint()" style="background: var(--warning); min-width: auto; padding: 10px 18px;">💡 提示</button>
@@ -337,9 +323,6 @@
     const fs1 = n => n === 0 ? `` : (n > 0 ? `+ ${n}` : `− ${Math.abs(n)}`); 
     const fi1 = n => n === 0 ? `` : (n > 0 ? `− ${n}` : `+ ${Math.abs(n)}`);
 
-    // ==========================================
-    // 🌟 固定題庫與 AI 動態變異引擎
-    // ==========================================
     const qBanks = {
         'base': [
             { getOriginal: () => ({ eq: `x − 7 > 5`, solX: 12, solOp: `>`, stepsHTML: `移項：x > 5 + 7<br>計算：x > 12` }), getVariation: () => { let sX = getNonZero(15, -5), c1 = getNonZero(15, -15), c2 = sX + c1; return { eq: `x ${fs1(c1)} > ${c2}`, solX: sX, solOp: `>`, stepsHTML: `移項：x > ${c2} ${fi1(c1)}<br>計算：x > ${sX}` }; } },
@@ -468,7 +451,6 @@
         pState[mode].prob = prob;
         eqBox.innerHTML = prob.eq;
         
-        // 重設輸入框與符號
         document.getElementById('practice-val').value = "";
         document.getElementById('practice-sign').value = "1";
     }
@@ -497,7 +479,6 @@
             return;
         }
 
-        // 利用下拉選單決定正負號，且強制絕對值避免手誤
         const sign = parseInt(document.getElementById('practice-sign').value);
         const uVal = sign * Math.abs(rawVal);
 
@@ -721,7 +702,6 @@
         eqBox.innerHTML = prob.eq;
         document.getElementById('diag-lvl-label').innerText = lvl;
         
-        // 重設輸入框與符號
         document.getElementById('diag-val').value = '';
         document.getElementById('diag-sign').value = '1';
         
@@ -791,7 +771,6 @@
             return;
         }
 
-        // 利用下拉選單決定正負號，且強制絕對值避免手誤
         const sign = parseInt(document.getElementById('diag-sign').value);
         const uVal = sign * Math.abs(rawVal);
 
@@ -914,9 +893,6 @@
         }
     });
 
-    // ==========================================
-    // 🎨 計算紙小白板邏輯
-    // ==========================================
     const spContainer = document.getElementById('sp-container');
     const spHeader = document.getElementById('sp-header');
     const spCanvas = document.getElementById('sp-canvas');
@@ -927,12 +903,10 @@
     let isDragging = false;
     let dragStartX, dragStartY, initialLeft, initialTop;
 
-    // 開關計算紙
     function toggleSp() {
         spContainer.classList.toggle('hidden');
     }
 
-    // 設定工具
     function setSpTool(tool) {
         currentSpTool = tool;
         document.getElementById('sp-pen').classList.remove('active');
@@ -940,16 +914,13 @@
         document.getElementById('sp-' + tool).classList.add('active');
     }
 
-    // 清空畫布
     function clearSp() {
         spCtx.clearRect(0, 0, spCanvas.width, spCanvas.height);
     }
 
-    // 畫布基礎設定
     spCtx.lineCap = 'round';
     spCtx.lineJoin = 'round';
 
-    // 取得滑鼠/觸控在畫布上的真實座標 (考量 CSS 縮放)
     function getCanvasPos(e) {
         const rect = spCanvas.getBoundingClientRect();
         const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
@@ -962,7 +933,6 @@
         };
     }
 
-    // 開始畫
     function startDraw(e) {
         isDrawing = true;
         const pos = getCanvasPos(e);
@@ -971,40 +941,35 @@
         draw(e);
     }
 
-    // 繪製中
     function draw(e) {
         if (!isDrawing) return;
-        e.preventDefault(); // 防止手機端滑動螢幕
+        e.preventDefault(); 
         const pos = getCanvasPos(e);
         
         spCtx.globalCompositeOperation = currentSpTool === 'eraser' ? 'destination-out' : 'source-over';
-        spCtx.lineWidth = currentSpTool === 'eraser' ? 40 : 4; // 橡皮擦粗一點
+        spCtx.lineWidth = currentSpTool === 'eraser' ? 40 : 4; 
         spCtx.strokeStyle = '#2c3e50';
 
         spCtx.lineTo(pos.x, pos.y);
         spCtx.stroke();
     }
 
-    // 結束畫
     function endDraw() {
         isDrawing = false;
         spCtx.beginPath();
     }
 
-    // 綁定畫布事件 (滑鼠)
     spCanvas.addEventListener('mousedown', startDraw);
     spCanvas.addEventListener('mousemove', draw);
     spCanvas.addEventListener('mouseup', endDraw);
     spCanvas.addEventListener('mouseout', endDraw);
 
-    // 綁定畫布事件 (觸控)
     spCanvas.addEventListener('touchstart', startDraw, { passive: false });
     spCanvas.addEventListener('touchmove', draw, { passive: false });
     spCanvas.addEventListener('touchend', endDraw);
 
-    // --- 拖曳視窗邏輯 ---
     function dragStart(e) {
-        if(e.target.tagName === 'BUTTON') return; // 點擊按鈕時不觸發拖曳
+        if(e.target.tagName === 'BUTTON') return; 
         isDragging = true;
         dragStartX = e.clientX || e.touches[0].clientX;
         dragStartY = e.clientY || e.touches[0].clientY;
@@ -1025,7 +990,6 @@
         isDragging = false;
     }
 
-    // 綁定標題列拖曳事件
     spHeader.addEventListener('mousedown', dragStart);
     document.addEventListener('mousemove', drag);
     document.addEventListener('mouseup', dragEnd);
