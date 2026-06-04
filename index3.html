@@ -49,6 +49,8 @@
         @keyframes comboPulse { from { transform: scale(1); } to { transform: scale(1.02); } }
         
         .input-group { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+        
+        /* === 修改部分：拆開 select 與 input[type="number"] 的 text-align 設定 === */
         select, input[type="number"] { 
             padding: 10px; 
             font-size: 1.3rem; 
@@ -58,12 +60,22 @@
             background: white; 
             color: var(--dark);
             transition: 0.2s; 
+            touch-action: manipulation;
+        }
+        select:disabled, input[type="number"]:disabled { background: #f0f0f0; color: #888; cursor: not-allowed; border-color: #ddd; }
+        
+        select { 
+            cursor: pointer; 
+            text-align: left; /* Android 修復關鍵 */
+            padding: 10px 15px;
+        }
+        input[type="number"] { 
+            width: 100px; 
+            cursor: text; 
             text-align: center; 
         }
-        select { cursor: pointer; }
-        select:disabled, input[type="number"]:disabled { background: #f0f0f0; color: #888; cursor: not-allowed; border-color: #ddd; }
-        input[type="number"] { width: 100px; cursor: text; }
-        
+        /* ======================================================================= */
+
         .submit-btn { padding: 10px 24px; background: var(--dark); color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 1.1rem; font-weight: bold; box-shadow: 0 4px 0 #1a252f; transition: 0.2s; min-width: 100px; height: 50px; }
         .submit-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #1a252f; }
         .submit-btn.next-mode { background: var(--primary); box-shadow: 0 4px 0 #357abd; }
@@ -1004,12 +1016,18 @@
     
     // 將手機版觸控滑動改為更安全的方式，避免攔截下拉選單點擊
     spHeader.addEventListener('touchstart', dragStart, { passive: false });
+    
+    // === 修改部分：加入 target 判斷白名單 ===
     document.addEventListener('touchmove', function(e) {
+        if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT') return;
+        
         if (isDragging) {
             e.preventDefault();
             drag(e);
         }
     }, { passive: false });
+    // =====================================
+    
     document.addEventListener('touchend', dragEnd);
 
 </script>
